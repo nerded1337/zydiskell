@@ -1,0 +1,287 @@
+-- Register.hs ---
+
+-- Copyright (C) 2020 Nerd Ed
+
+-- Author: Nerd Ed <nerded.nerded@gmail.com>
+
+-- This program is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU General Public License
+-- as published by the Free Software Foundation; either version 3
+-- of the License, or (at your option) any later version.
+
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+
+-- You should have received a copy of the GNU General Public License
+
+{-# LANGUAGE DerivingVia #-}
+
+module Zydis.Register
+  ( Register(..)
+  )
+where
+
+import           Zydis.Util
+
+data Register
+  = RegisterNone
+  | RegisterAl
+  | RegisterCl
+  | RegisterDl
+  | RegisterBl
+  | RegisterAh
+  | RegisterCh
+  | RegisterDh
+  | RegisterBh
+  | RegisterSpl
+  | RegisterBpl
+  | RegisterSil
+  | RegisterDil
+  | RegisterR8B
+  | RegisterR9B
+  | RegisterR10B
+  | RegisterR11B
+  | RegisterR12B
+  | RegisterR13B
+  | RegisterR14B
+  | RegisterR15B
+  | RegisterAx
+  | RegisterCx
+  | RegisterDx
+  | RegisterBx
+  | RegisterSp
+  | RegisterBp
+  | RegisterSi
+  | RegisterDi
+  | RegisterR8W
+  | RegisterR9W
+  | RegisterR10W
+  | RegisterR11W
+  | RegisterR12W
+  | RegisterR13W
+  | RegisterR14W
+  | RegisterR15W
+  | RegisterEax
+  | RegisterEcx
+  | RegisterEdx
+  | RegisterEbx
+  | RegisterEsp
+  | RegisterEbp
+  | RegisterEsi
+  | RegisterEdi
+  | RegisterR8D
+  | RegisterR9D
+  | RegisterR10D
+  | RegisterR11D
+  | RegisterR12D
+  | RegisterR13D
+  | RegisterR14D
+  | RegisterR15D
+  | RegisterRax
+  | RegisterRcx
+  | RegisterRdx
+  | RegisterRbx
+  | RegisterRsp
+  | RegisterRbp
+  | RegisterRsi
+  | RegisterRdi
+  | RegisterR8
+  | RegisterR9
+  | RegisterR10
+  | RegisterR11
+  | RegisterR12
+  | RegisterR13
+  | RegisterR14
+  | RegisterR15
+  | RegisterSt0
+  | RegisterSt1
+  | RegisterSt2
+  | RegisterSt3
+  | RegisterSt4
+  | RegisterSt5
+  | RegisterSt6
+  | RegisterSt7
+  | RegisterX87Control
+  | RegisterX87Status
+  | RegisterX87Tag
+  | RegisterMm0
+  | RegisterMm1
+  | RegisterMm2
+  | RegisterMm3
+  | RegisterMm4
+  | RegisterMm5
+  | RegisterMm6
+  | RegisterMm7
+  | RegisterXmm0
+  | RegisterXmm1
+  | RegisterXmm2
+  | RegisterXmm3
+  | RegisterXmm4
+  | RegisterXmm5
+  | RegisterXmm6
+  | RegisterXmm7
+  | RegisterXmm8
+  | RegisterXmm9
+  | RegisterXmm10
+  | RegisterXmm11
+  | RegisterXmm12
+  | RegisterXmm13
+  | RegisterXmm14
+  | RegisterXmm15
+  | RegisterXmm16
+  | RegisterXmm17
+  | RegisterXmm18
+  | RegisterXmm19
+  | RegisterXmm20
+  | RegisterXmm21
+  | RegisterXmm22
+  | RegisterXmm23
+  | RegisterXmm24
+  | RegisterXmm25
+  | RegisterXmm26
+  | RegisterXmm27
+  | RegisterXmm28
+  | RegisterXmm29
+  | RegisterXmm30
+  | RegisterXmm31
+  | RegisterYmm0
+  | RegisterYmm1
+  | RegisterYmm2
+  | RegisterYmm3
+  | RegisterYmm4
+  | RegisterYmm5
+  | RegisterYmm6
+  | RegisterYmm7
+  | RegisterYmm8
+  | RegisterYmm9
+  | RegisterYmm10
+  | RegisterYmm11
+  | RegisterYmm12
+  | RegisterYmm13
+  | RegisterYmm14
+  | RegisterYmm15
+  | RegisterYmm16
+  | RegisterYmm17
+  | RegisterYmm18
+  | RegisterYmm19
+  | RegisterYmm20
+  | RegisterYmm21
+  | RegisterYmm22
+  | RegisterYmm23
+  | RegisterYmm24
+  | RegisterYmm25
+  | RegisterYmm26
+  | RegisterYmm27
+  | RegisterYmm28
+  | RegisterYmm29
+  | RegisterYmm30
+  | RegisterYmm31
+  | RegisterZmm0
+  | RegisterZmm1
+  | RegisterZmm2
+  | RegisterZmm3
+  | RegisterZmm4
+  | RegisterZmm5
+  | RegisterZmm6
+  | RegisterZmm7
+  | RegisterZmm8
+  | RegisterZmm9
+  | RegisterZmm10
+  | RegisterZmm11
+  | RegisterZmm12
+  | RegisterZmm13
+  | RegisterZmm14
+  | RegisterZmm15
+  | RegisterZmm16
+  | RegisterZmm17
+  | RegisterZmm18
+  | RegisterZmm19
+  | RegisterZmm20
+  | RegisterZmm21
+  | RegisterZmm22
+  | RegisterZmm23
+  | RegisterZmm24
+  | RegisterZmm25
+  | RegisterZmm26
+  | RegisterZmm27
+  | RegisterZmm28
+  | RegisterZmm29
+  | RegisterZmm30
+  | RegisterZmm31
+  | RegisterFlags
+  | RegisterEflags
+  | RegisterRflags
+  | RegisterIp
+  | RegisterEip
+  | RegisterRip
+  | RegisterEs
+  | RegisterCs
+  | RegisterSs
+  | RegisterDs
+  | RegisterFs
+  | RegisterGs
+  | RegisterGdtr
+  | RegisterLdtr
+  | RegisterIdtr
+  | RegisterTr
+  | RegisterTr0
+  | RegisterTr1
+  | RegisterTr2
+  | RegisterTr3
+  | RegisterTr4
+  | RegisterTr5
+  | RegisterTr6
+  | RegisterTr7
+  | RegisterCr0
+  | RegisterCr1
+  | RegisterCr2
+  | RegisterCr3
+  | RegisterCr4
+  | RegisterCr5
+  | RegisterCr6
+  | RegisterCr7
+  | RegisterCr8
+  | RegisterCr9
+  | RegisterCr10
+  | RegisterCr11
+  | RegisterCr12
+  | RegisterCr13
+  | RegisterCr14
+  | RegisterCr15
+  | RegisterDr0
+  | RegisterDr1
+  | RegisterDr2
+  | RegisterDr3
+  | RegisterDr4
+  | RegisterDr5
+  | RegisterDr6
+  | RegisterDr7
+  | RegisterDr8
+  | RegisterDr9
+  | RegisterDr10
+  | RegisterDr11
+  | RegisterDr12
+  | RegisterDr13
+  | RegisterDr14
+  | RegisterDr15
+  | RegisterK0
+  | RegisterK1
+  | RegisterK2
+  | RegisterK3
+  | RegisterK4
+  | RegisterK5
+  | RegisterK6
+  | RegisterK7
+  | RegisterBnd0
+  | RegisterBnd1
+  | RegisterBnd2
+  | RegisterBnd3
+  | RegisterBndcfg
+  | RegisterBndstatus
+  | RegisterMxcsr
+  | RegisterPkru
+  | RegisterXcr0
+  deriving stock (Show, Eq, Bounded, Enum)
+  deriving Storable via StorableExt Register

@@ -1,0 +1,51 @@
+on: [push]
+
+name: build
+
+jobs:
+  build-cabal:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        ghc: ['8.6.5', '8.8.4', '8.10.2']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    name: Cabal / ${{ matrix.ghc }} / ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          submodules: recursive
+      - name: Setup Haskell
+        uses: actions/setup-haskell@v1.1.3
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: latest
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Cabal update
+        run: cabal v2-update
+      - name: Cabal build
+        run: cabal v2-build
+      - name: Cabal test
+        run: cabal v2-test
+
+  build-stack:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    name: Stack / ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          submodules: recursive
+      - name: Setup Haskell
+        uses: actions/setup-haskell@v1.1.3
+        with:
+          enable-stack: true
+          stack-no-global: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Stack build
+        run: stack build
+      - name: Stack test
+        run: stack test

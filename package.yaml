@@ -1,0 +1,44 @@
+name:                zydiskell
+version:             0.1.0.0
+github:              "nerded1337/zydiskell"
+license:             GPL-3
+author:              "nerded"
+maintainer:          "nerded.nerded@gmail.com"
+copyright:           "2020 nerded"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+description:         Please see the README on GitHub at <https://github.com/nerded1337/zydiskell#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- vector >= 0.12 && < 0.13
+- bytestring >= 0.10 && < 0.11
+- storable-record >= 0.0.5 && < 0.0.6
+
+library:
+  source-dirs: src
+  c-sources:
+    - external/zydis/src/*.c
+  include-dirs:
+    - src_c
+    - external/zydis/src/
+    - external/zydis/include
+    - external/zydis/dependencies/zycore/include
+  ghc-options:
+    - -O2
+    - -Wall
+    - -Werror
+
+tests:
+  zydiskell-tests:
+    source-dirs: test
+    main: Main.hs
+    dependencies:
+      - zydiskell
+    ghc-options:
+      - -Wall
+      - -Werror
+      - -threaded

@@ -1,0 +1,103 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           zydiskell
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/nerded1337/zydiskell#readme>
+homepage:       https://github.com/nerded1337/zydiskell#readme
+bug-reports:    https://github.com/nerded1337/zydiskell/issues
+author:         nerded
+maintainer:     nerded.nerded@gmail.com
+copyright:      2020 nerded
+license:        GPL-3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/nerded1337/zydiskell
+
+library
+  exposed-modules:
+      Zydis
+      Zydis.AddressWidth
+      Zydis.BranchType
+      Zydis.BroadcastMode
+      Zydis.Constants
+      Zydis.ConversionMode
+      Zydis.CPUFlagAction
+      Zydis.Decoder
+      Zydis.ElementType
+      Zydis.ExceptionClass
+      Zydis.InstructionCategory
+      Zydis.InstructionEncoding
+      Zydis.ISAExt
+      Zydis.ISASet
+      Zydis.MachineMode
+      Zydis.MaskMode
+      Zydis.Mnemonic
+      Zydis.OpcodeMap
+      Zydis.Operand
+      Zydis.OperandEncoding
+      Zydis.OperandMemoryType
+      Zydis.OperandType
+      Zydis.OperandVisibility
+      Zydis.PrefixType
+      Zydis.Register
+      Zydis.RoundingMode
+      Zydis.SwizzleMode
+      Zydis.Types
+      Zydis.Util
+  other-modules:
+      Paths_zydiskell
+  hs-source-dirs:
+      src
+  ghc-options: -O2 -Wall -Werror
+  include-dirs:
+      src_c
+      external/zydis/src/
+      external/zydis/include
+      external/zydis/dependencies/zycore/include
+  c-sources:
+      external/zydis/src/Decoder.c
+      external/zydis/src/DecoderData.c
+      external/zydis/src/Formatter.c
+      external/zydis/src/FormatterATT.c
+      external/zydis/src/FormatterBase.c
+      external/zydis/src/FormatterBuffer.c
+      external/zydis/src/FormatterIntel.c
+      external/zydis/src/MetaInfo.c
+      external/zydis/src/Mnemonic.c
+      external/zydis/src/Register.c
+      external/zydis/src/SharedData.c
+      external/zydis/src/String.c
+      external/zydis/src/Utils.c
+      external/zydis/src/Zydis.c
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <0.11
+    , storable-record >=0.0.5 && <0.0.6
+    , vector >=0.12 && <0.13
+  default-language: Haskell2010
+
+test-suite zydiskell-tests
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Paths_zydiskell
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Werror -threaded
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.10 && <0.11
+    , storable-record >=0.0.5 && <0.0.6
+    , vector >=0.12 && <0.13
+    , zydiskell
+  default-language: Haskell2010
