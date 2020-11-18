@@ -23,10 +23,34 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications    #-}
 
+-- |
+-- = This handy module extend Storable typeclasse with default instances for C-like enums/fixed arrays (FFI).
+--
+-- Using 'StorableExt', we are now able to use deriving via clause on sum types.
+--
+-- @
+-- data X
+--   = A
+--   | B
+--   | C
+--   deriving stock Enum
+--   deriving Storable via StorableExt X
+-- @
+--
+-- This type will be stored as a word32 (C enum FFI).
+--
+-- Using the 'StorableFixedArray', we are now able to encode fixed sizes in the type (in conjunction with storable-record "Foreign.Storable.FixedArray").
+--
+-- @
+-- data X = X (StorableFixedArray Word32 10)
+-- @
+--
+-- This type will be stored as 10 contiguous word32 (C fixed array).
+--
 module Zydis.Util
   ( StorableExt(..)
   , StorableFixedArray(..)
-  , Storable(..)
+  , Storable
   )
 where
 
@@ -39,6 +63,8 @@ import           Foreign.Storable
 import qualified Foreign.Storable.FixedArray   as Fixed
 import           GHC.TypeLits
 
+
+-- | Wrapper to extend storable default instances.
 newtype StorableExt a =
   StorableExt
     { unStorableExt :: a
@@ -52,6 +78,7 @@ instance forall a. Enum a => Storable (StorableExt a) where
   poke ptr v =
     poke (castPtr @_ @Word32 ptr) (fromIntegral $ fromEnum $ unStorableExt v)
 
+-- | Wrapper to extend storable default instances.
 newtype StorableFixedArray a b =
   StorableFixedArray
     { unStorableFixedArray :: Vector a

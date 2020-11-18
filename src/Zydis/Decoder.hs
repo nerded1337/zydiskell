@@ -22,7 +22,11 @@
 {-# LANGUAGE TypeApplications         #-}
 
 module Zydis.Decoder
-  ( initialize
+  ( ZyanStatus
+  , ZyanUSize
+  , Offset
+  , Length
+  , initialize
   , decodeBuffer
   , decodeFullBuffer
   )
@@ -39,6 +43,8 @@ import           Foreign.Ptr
 import           Foreign.Storable
 import           Zydis.Types
 
+-- * FFI types
+
 type MachineModeC = Word32
 
 type AddressWidthC = Word32
@@ -51,17 +57,22 @@ type Offset = ZyanUSize
 
 type Length = ZyanUSize
 
+-- * FFI declarations
+
 foreign import ccall unsafe "ZydisDecoderInit" c_ZydisDecoderInit
   :: Ptr Decoder -> MachineModeC -> AddressWidthC -> IO ZyanStatus
 
 foreign import ccall unsafe "ZydisDecoderDecodeBuffer" c_ZydisDecoderDecodeBuffer
   :: Ptr Decoder -> Ptr Word8 -> ZyanUSize -> Ptr DecodedInstruction -> IO ZyanStatus
 
-{-# INLINE zyanSuccess #-}
+-- * FFI bridges
+
+-- | Directly stolen from https://github.com/zyantific/zycore-c/blob/71440fa634d1313db735d3262d453be641bb404f/include/Zycore/Status.h#L81
 zyanSuccess :: Word32 -> Bool
 zyanSuccess x = (x .&. 0x80000000) == 0
+{-# INLINE zyanSuccess #-}
 
-{-# INLINE initialize #-}
+-- | Initialize a Zydis decoder, required to decode instructions.
 initialize :: MachineMode -> AddressWidth -> IO (Either ZyanStatus Decoder)
 initialize mm aw = alloca go
  where
@@ -70,8 +81,9 @@ initialize mm aw = alloca go
                             (fromIntegral $ fromEnum mm)
                             (fromIntegral $ fromEnum aw)
     if zyanSuccess r then Right <$> peek decoder else pure $ Left r
+{-# INLINE initialize #-}
 
-{-# INLINE decodeBuffer #-}
+-- | Decode a single intruction.
 decodeBuffer
   :: Decoder
   -> ByteString
@@ -90,8 +102,9 @@ decodeBuffer d bs o l = alloca @Decoder go
   go'' decoderPtr decodedInstructionPtr bufferPtr = do
     poke decoderPtr d
     doDecodeInstruction decoderPtr decodedInstructionPtr bufferPtr o l
+{-# INLINE decodeBuffer #-}
 
-{-# INLINE decodeFullBuffer #-}
+-- | Efficiently decode an entire buffer of instructions.
 decodeFullBuffer
   :: Decoder -> ByteString -> IO (Either ZyanStatus (Vector DecodedInstruction))
 decodeFullBuffer d bs = alloca @Decoder go
@@ -116,8 +129,8 @@ decodeFullBuffer d bs = alloca @Decoder go
             loop (v <> pure i, o + il, l - il)
           Left s -> pure $ Left s
       | otherwise = pure $ Right v
+{-# INLINE decodeFullBuffer #-}
 
-{-# INLINE doDecodeInstruction #-}
 doDecodeInstruction
   :: Ptr Decoder
   -> Ptr DecodedInstruction
@@ -131,3 +144,4 @@ doDecodeInstruction decoderPtr decodedInstructionPtr bufferPtr o l = do
                                   l
                                   decodedInstructionPtr
   if zyanSuccess r then Right <$> peek decodedInstructionPtr else pure $ Left r
+{-# INLINE doDecodeInstruction #-}

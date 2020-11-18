@@ -58,7 +58,7 @@ import           Zydis.PrefixType              as Z
 import           Zydis.Register                as Z
 import           Zydis.RoundingMode            as Z
 import           Zydis.SwizzleMode             as Z
-import           Zydis.Util                    as Z
+import           Zydis.Util
 
 data DecodedInstructionRawImmediate =
   DecodedInstructionRawImmediate
