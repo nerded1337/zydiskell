@@ -2,6 +2,13 @@
 
 Haskell langage binding for the [Zydis library](https://github.com/zyantific/zydis), a fast and lightweight x86/x86-64 disassembler.
 
+# Building
+
+- Recursively clone the project:  `git clone --recursive https://github.com/nerded1337/zydiskell`
+- Either use Stack or Cabal: `stack build` | `cabal v2-build`
+
+Note: The [Zydis library](https://github.com/zyantific/zydis) will be directly compiled by GHC.
+
 ## Example
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
