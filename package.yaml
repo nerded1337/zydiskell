@@ -6,7 +6,7 @@ license:             GPL-3
 author:              "nerded"
 maintainer:          "nerded.nerded@gmail.com"
 copyright:           "2020 nerded"
-category:            System, Parsing
+category:            System, Parsing, Disassembler
 
 extra-source-files:
 - README.md
