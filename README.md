@@ -25,7 +25,7 @@ Z.decodeBuffer
   -> Length
   -> IO (Either ZyanStatus DecodedInstruction)
 
-Z. decodeFullBuffer
+Z.decodeFullBuffer
   :: Decoder -> ByteString -> IO (Either ZyanStatus (Vector DecodedInstruction))
 ```
 

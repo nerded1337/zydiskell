@@ -48,10 +48,11 @@ module Zydis.Types
 where
 
 import           Data.Int
+import           Data.Vector.Fixed.Storable
 import           Data.Word
 import           Foreign.Storable
 import qualified Foreign.Storable.Record       as Store
-import           GHC.TypeLits
+import           GHC.TypeNats
 
 import           Zydis.AddressWidth            as Z
 import           Zydis.BranchType              as Z
@@ -73,7 +74,6 @@ import           Zydis.PrefixType              as Z
 import           Zydis.Register                as Z
 import           Zydis.RoundingMode            as Z
 import           Zydis.SwizzleMode             as Z
-import           Zydis.Util
 
 data DecodedInstructionRawImmediate =
   DecodedInstructionRawImmediate
@@ -380,7 +380,7 @@ instance Storable DecodedInstructionRawPrefix where
 data DecodedInstructionRaw =
   DecodedInstructionRaw
   { decodedInstructionRawPrefixCount :: {-# UNPACK #-}!Word8
-  , decodedInstructionRawPrefixes    :: !(StorableFixedArray DecodedInstructionRawPrefix ZydisMaxInstructionLength)
+  , decodedInstructionRawPrefixes    :: !(Vec ZydisMaxInstructionLength DecodedInstructionRawPrefix)
   , decodedInstructionRawRex         :: !DecodedInstructionRawRex
   , decodedInstructionRawXop         :: !DecodedInstructionRawXop
   , decodedInstructionRawVex         :: !DecodedInstructionRawVex
@@ -389,7 +389,7 @@ data DecodedInstructionRaw =
   , decodedInstructionRawModRm       :: !DecodedInstructionModRm
   , decodedInstructionRawSib         :: !DecodedInstructionRawSib
   , decodedInstructionRawDisp        :: !DecodedInstructionRawDisp
-  , decodedInstructionRawImmediates  :: !(StorableFixedArray DecodedInstructionRawImmediate ZydisRawImmediateCount)
+  , decodedInstructionRawImmediates  :: !(Vec ZydisRawImmediateCount DecodedInstructionRawImmediate)
   }
   deriving stock (Show, Eq)
 
@@ -526,9 +526,9 @@ data DecodedInstruction =
     , decodedInstructionOperandWidth  :: {-# UNPACK #-}!Word8
     , decodedInstructionAddressWidth  :: {-# UNPACK #-}!Word8
     , decodedInstructionOperandCount  :: {-# UNPACK #-}!Word8
-    , decodedInstructionOperands      :: !(StorableFixedArray Operand ZydisMaxOperandCount)
+    , decodedInstructionOperands      :: !(Vec ZydisMaxOperandCount Operand)
     , decodedInstructionAttributes    :: {-# UNPACK #-}!Word64
-    , decodedInstructionAccessedFlags :: !(StorableFixedArray CPUFlagAction (ZydisCpuFlagMaxValue + 1))
+    , decodedInstructionAccessedFlags :: !(Vec (ZydisCpuFlagMaxValue + 1) CPUFlagAction)
     , decodedInstructionAvx           :: !DecodedInstructionAvx
     , decodedInstructionMeta          :: !DecodedInstructionMeta
     , decodedInstructionRaw           :: !DecodedInstructionRaw

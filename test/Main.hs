@@ -21,8 +21,8 @@
 
 module Main where
 
-import           Data.Bitraversable
 import           Data.Bifoldable
+import           Data.Bitraversable
 import qualified Zydis                         as Z
 
 main :: IO ()

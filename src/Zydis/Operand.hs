@@ -21,6 +21,10 @@
 
 module Zydis.Operand
   ( Operand(..)
+  , OperandMemory(..)
+  , OperandMemoryDisplacement(..)
+  , OperandPointer(..)
+  , OperandImmediate(..)
   )
 where
 
