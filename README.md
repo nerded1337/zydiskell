@@ -9,6 +9,26 @@ Haskell langage binding for the [Zydis library](https://github.com/zyantific/zyd
 
 Note: The [Zydis library](https://github.com/zyantific/zydis) will be directly compiled by GHC.
 
+# Interface
+
+We currently expose three functions:
+
+```haskell
+import qualified Zydis as Z
+
+Z.initialize :: MachineMode -> AddressWidth -> IO (Either ZyanStatus Decoder)
+
+Z.decodeBuffer
+  :: Decoder
+  -> ByteString
+  -> Offset
+  -> Length
+  -> IO (Either ZyanStatus DecodedInstruction)
+
+Z. decodeFullBuffer
+  :: Decoder -> ByteString -> IO (Either ZyanStatus (Vector DecodedInstruction))
+```
+
 ## Example
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
