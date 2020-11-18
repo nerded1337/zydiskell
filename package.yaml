@@ -15,7 +15,7 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/nerded1337/zydiskell#readme>
 
 dependencies:
-- base >= 4.7 && < 5
+- base >= 4.7 && < 4.15
 - vector >= 0.12 && < 0.13
 - bytestring >= 0.10 && < 0.11
 - storable-record >= 0.0.5 && < 0.0.6
@@ -27,7 +27,6 @@ library:
   install-includes:
     - ./src_c/ZydisExportConfig.h
     - ./src_c/ZycoreExportConfig.h
-
     - ./external/zydis/src/Generated/AccessedFlags.inc
     - ./external/zydis/src/Generated/DecoderTables.inc
     - ./external/zydis/src/Generated/EncodableInstructions.inc
@@ -40,7 +39,6 @@ library:
     - ./external/zydis/src/Generated/InstructionDefinitions.inc
     - ./external/zydis/src/Generated/InstructionEncodings.inc
     - ./external/zydis/src/Generated/OperandDefinitions.inc
-
     - ./external/zydis/include/Zydis/Decoder.h
     - ./external/zydis/include/Zydis/DecoderTypes.h
     - ./external/zydis/include/Zydis/Formatter.h
@@ -64,7 +62,6 @@ library:
     - ./external/zydis/include/Zydis/Internal/FormatterIntel.h
     - ./external/zydis/include/Zydis/Internal/SharedData.h
     - ./external/zydis/include/Zydis/Internal/String.h
-
     - ./external/zydis/dependencies/zycore/include/Zycore/Allocator.h
     - ./external/zydis/dependencies/zycore/include/Zycore/ArgParse.h
     - ./external/zydis/dependencies/zycore/include/Zycore/Bitset.h
