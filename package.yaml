@@ -37,7 +37,7 @@ tests:
     source-dirs: test
     main: Main.hs
     dependencies:
-      - zydiskell == 0.1.0.0
+      - zydiskell
     ghc-options:
       - -Wall
       - -Werror
