@@ -28,6 +28,21 @@ module Zydis.Types
   , AddressWidth(..)
   , Decoder(..)
   , DecodedInstruction(..)
+  , DecodedInstructionRawImmediate(..)
+  , DecodedInstructionRawDisp(..)
+  , DecodedInstructionRawSib(..)
+  , DecodedInstructionModRm(..)
+  , DecodedInstructionRawMvex(..)
+  , DecodedInstructionRawEvex(..)
+  , DecodedInstructionRawVex(..)
+  , DecodedInstructionRawXop(..)
+  , DecodedInstructionRawRex(..)
+  , DecodedInstructionRawPrefix(..)
+  , DecodedInstructionRaw(..)
+  , DecodedInstructionMeta(..)
+  , DecodedInstructionAvxBroadcast(..)
+  , DecodedInstructionAvxMask(..)
+  , DecodedInstructionAvx(..)
   , module Z
   )
 where
@@ -62,8 +77,8 @@ import           Zydis.Util
 
 data DecodedInstructionRawImmediate =
   DecodedInstructionRawImmediate
-  { decodedInstructionRawImmediateIsSigned   :: !Word8
-  , decodedInstructionRawImmediateIsRelative :: !Word8
+  { decodedInstructionRawImmediateIsSigned   :: {-# UNPACK #-}!Word8
+  , decodedInstructionRawImmediateIsRelative :: {-# UNPACK #-}!Word8
   , decodedInstructionRawImmediateValue      :: {-# UNPACK #-}!Word64
   , decodedInstructionRawImmediateSize       :: {-# UNPACK #-}!Word8
   , decodedInstructionRawImmediateOffset     :: {-# UNPACK #-}!Word8
@@ -428,7 +443,7 @@ instance Storable DecodedInstructionMeta where
 
 data DecodedInstructionAvxBroadcast =
   DecodedInstructionAvxBroadcast
-    { decodedInstructionAvxBroadcastIsStatic :: !Word8
+    { decodedInstructionAvxBroadcastIsStatic :: {-# UNPACK #-}!Word8
     , decodedInstructionAvxBroadcastMode     :: !BroadcastMode
     }
   deriving stock (Show, Eq)
@@ -475,8 +490,8 @@ data DecodedInstructionAvx =
     , decodedInstructionAvxRoundingMode    :: !RoundingMode
     , decodedInstructionAvxSwizzleMode     :: !SwizzleMode
     , decodedInstructionAvxConversionMode  :: !ConversionMode
-    , decodedInstructionAvxHasSAE          :: !Word8
-    , decodedInstructionAvxHasEvictionHint :: !Word8
+    , decodedInstructionAvxHasSAE          :: {-# UNPACK #-}!Word8
+    , decodedInstructionAvxHasEvictionHint :: {-# UNPACK #-}!Word8
     }
   deriving stock (Show, Eq)
 
@@ -551,7 +566,7 @@ data Decoder =
   Decoder
     { decoderMachineMode  :: !MachineMode
     , decoderAddressWidth :: !AddressWidth
-    , decoderDecoderMode  :: !Word8
+    , decoderDecoderMode  :: {-# UNPACK #-}!Word8
     }
   deriving stock (Show, Eq)
 
