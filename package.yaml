@@ -1,10 +1,12 @@
 name:                zydiskell
 version:             0.1.0.0
+synopsis:            Haskell language binding for the Zydis library, a x86/x86-64 disassembler.
 github:              "nerded1337/zydiskell"
 license:             GPL-3
 author:              "nerded"
 maintainer:          "nerded.nerded@gmail.com"
 copyright:           "2020 nerded"
+category:            System, Parsing
 
 extra-source-files:
 - README.md
@@ -21,16 +23,73 @@ dependencies:
 library:
   source-dirs: src
   c-sources:
-    - external/zydis/src/*.c
+    - ./external/zydis/src/*.c
+  install-includes:
+    - ./src_c/ZydisExportConfig.h
+    - ./src_c/ZycoreExportConfig.h
+
+    - ./external/zydis/src/Generated/AccessedFlags.inc
+    - ./external/zydis/src/Generated/DecoderTables.inc
+    - ./external/zydis/src/Generated/EncodableInstructions.inc
+    - ./external/zydis/src/Generated/EnumISAExt.inc
+    - ./external/zydis/src/Generated/EnumISASet.inc
+    - ./external/zydis/src/Generated/EnumInstructionCategory.inc
+    - ./external/zydis/src/Generated/EnumMnemonic.inc
+    - ./external/zydis/src/Generated/EnumRegister.inc
+    - ./external/zydis/src/Generated/FormatterStrings.inc
+    - ./external/zydis/src/Generated/InstructionDefinitions.inc
+    - ./external/zydis/src/Generated/InstructionEncodings.inc
+    - ./external/zydis/src/Generated/OperandDefinitions.inc
+
+    - ./external/zydis/include/Zydis/Decoder.h
+    - ./external/zydis/include/Zydis/DecoderTypes.h
+    - ./external/zydis/include/Zydis/Formatter.h
+    - ./external/zydis/include/Zydis/FormatterBuffer.h
+    - ./external/zydis/include/Zydis/MetaInfo.h
+    - ./external/zydis/include/Zydis/Mnemonic.h
+    - ./external/zydis/include/Zydis/Register.h
+    - ./external/zydis/include/Zydis/SharedTypes.h
+    - ./external/zydis/include/Zydis/ShortString.h
+    - ./external/zydis/include/Zydis/Status.h
+    - ./external/zydis/include/Zydis/Utils.h
+    - ./external/zydis/include/Zydis/Zydis.h
+    - ./external/zydis/include/Zydis/Generated/EnumInstructionCategory.h
+    - ./external/zydis/include/Zydis/Generated/EnumISAExt.h
+    - ./external/zydis/include/Zydis/Generated/EnumISASet.h
+    - ./external/zydis/include/Zydis/Generated/EnumMnemonic.h
+    - ./external/zydis/include/Zydis/Generated/EnumRegister.h
+    - ./external/zydis/include/Zydis/Internal/DecoderData.h
+    - ./external/zydis/include/Zydis/Internal/FormatterATT.h
+    - ./external/zydis/include/Zydis/Internal/FormatterBase.h
+    - ./external/zydis/include/Zydis/Internal/FormatterIntel.h
+    - ./external/zydis/include/Zydis/Internal/SharedData.h
+    - ./external/zydis/include/Zydis/Internal/String.h
+
+    - ./external/zydis/dependencies/zycore/include/Zycore/Allocator.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/ArgParse.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Bitset.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Comparison.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Defines.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Format.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/LibC.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/List.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Object.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Status.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/String.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Types.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Vector.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/Zycore.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/API/Memory.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/API/Synchronization.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/API/Terminal.h
+    - ./external/zydis/dependencies/zycore/include/Zycore/API/Thread.h
   include-dirs:
-    - src_c
-    - external/zydis/src/
-    - external/zydis/include
-    - external/zydis/dependencies/zycore/include
+    - ./src_c
+    - ./external/zydis/src
+    - ./external/zydis/include
+    - ./external/zydis/dependencies/zycore/include
   ghc-options:
-    - -O2
     - -Wall
-    - -Werror
 
 tests:
   zydiskell-tests:
@@ -40,5 +99,3 @@ tests:
       - zydiskell
     ghc-options:
       - -Wall
-      - -Werror
-      - -threaded
