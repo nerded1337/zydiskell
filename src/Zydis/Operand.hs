@@ -43,8 +43,8 @@ import           Zydis.Register
 
 data OperandImmediate =
   OperandImmediate
-  { operandImmediateIsSigned   :: !Word8
-  , operandImmediateIsRelative :: !Word8
+  { operandImmediateIsSigned   :: {-# UNPACK #-}!Word8
+  , operandImmediateIsRelative :: {-# UNPACK #-}!Word8
   , operandImmediateValue      :: {-# UNPACK #-}!Word64
   }
   deriving stock (Show, Eq)
@@ -85,7 +85,7 @@ instance Storable OperandPointer where
 
 data OperandMemoryDisplacement =
   OperandMemoryDisplacement
-    { operandMemoryDisplacementHasDisplacement :: !Word8
+    { operandMemoryDisplacementHasDisplacement :: {-# UNPACK #-}!Word8
     , operandMemoryDisplacementValue           :: {-# UNPACK #-}!Int64
     }
   deriving stock (Show, Eq)
