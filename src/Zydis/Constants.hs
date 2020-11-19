@@ -27,7 +27,7 @@ module Zydis.Constants
   )
 where
 
-type ZydisCpuFlagMaxValue = 21
+type ZydisCpuFlagMaxValue = 20
 type ZydisMaxInstructionLength = 15
 type ZydisMaxOperandCount = 10
 type ZydisRawImmediateCount = 2
