@@ -14,19 +14,20 @@ Note: The [Zydis library](https://github.com/zyantific/zydis) will be directly c
 We currently expose three functions:
 
 ```haskell
+import Data.ByteString (ByteString)
 import qualified Zydis as Z
 
-Z.initialize :: MachineMode -> AddressWidth -> IO (Either ZyanStatus Decoder)
+Z.initialize :: Z.MachineMode -> Z.AddressWidth -> IO (Either Z.ZyanStatus Z.Decoder)
 
 Z.decodeBuffer
-  :: Decoder
+  :: Z.Decoder
   -> ByteString
-  -> Offset
-  -> Length
-  -> IO (Either ZyanStatus DecodedInstruction)
+  -> Z.Offset
+  -> Z.Length
+  -> IO (Either Z.ZyanStatus Z.DecodedInstruction)
 
 Z.decodeFullBuffer
-  :: Decoder -> ByteString -> IO (Either ZyanStatus (Vector DecodedInstruction))
+  :: Z.Decoder -> ByteString -> IO (Either Z.ZyanStatus (Vector Z.DecodedInstruction))
 ```
 
 ## Example
@@ -35,7 +36,7 @@ Z.decodeFullBuffer
 
 module Main where
 
-import           Data.Bitraversable
+import           Data.Vector
 import           Data.Bifoldable
 import qualified Zydis                         as Z
 
@@ -45,27 +46,33 @@ main = test
 test :: IO ()
 test = bitraverse_ initFailure decode =<< initZydis
  where
+  zyanError :: Show a => String -> a -> IO ()
   zyanError s = putStrLn . ((s <> ". ZyanStatus: ") <>) . show
 
-  initFailure     = zyanError "Failed to initialize decoder"
+  initFailure :: Z.ZyanStatus -> IO ()
+  initFailure = zyanError "Failed to initialize decoder"
 
-  initZydis       = Z.initialize Z.MachineModeLong64 Z.AddressWidth64
+  initZydis :: IO (Either Z.ZyanStatus Z.Decoder)
+  initZydis = Z.initialize Z.MachineModeLong64 Z.AddressWidth64
 
   {-
      mov rax, 0xCAFEBABECAFEBABE
      push rax
      ret
   -}
-  buffer          = "\x48\xB8\xBE\xBA\xFE\xCA\xBE\xBA\xFE\xCA\x50\xC3"
+  buffer    = "\x48\xB8\xBE\xBA\xFE\xCA\xBE\xBA\xFE\xCA\x50\xC3"
 
+  decodingFailure :: Z.ZyanStatus -> IO ()
   decodingFailure = zyanError "Failed to decode buffer"
 
   {-
       Given the decoded buffer, should output: [MnemonicMov,MnemonicPush,MnemonicRet]
   -}
-  printMnemonics  = print . fmap Z.decodedInstructionMnemonic
+  printMnemonics :: Vector Z.DecodedInstruction -> IO ()
+  printMnemonics = print . fmap Z.decodedInstructionMnemonic
 
+  decode :: Z.Decoder -> IO ()
   decode decoder =
-    bitraverse decodingFailure printMnemonics
+    bitraverse_ decodingFailure printMnemonics
       =<< Z.decodeFullBuffer decoder buffer
 ```
