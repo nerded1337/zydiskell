@@ -1,4 +1,5 @@
 [![build status](https://github.com/nerded1337/zydiskell/workflows/build/badge.svg)](https://github.com/nerded1337/zydiskell/actions)
+[![hackage version](https://img.shields.io/hackage/v/zydiskell)](https://hackage.haskell.org/package/zydiskell)
 
 # Zydiskell
 
