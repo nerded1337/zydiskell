@@ -1,3 +1,5 @@
+[![build status](https://github.com/nerded1337/zydiskell/workflows/build/badge.svg)](https://github.com/nerded1337/zydiskell/actions)
+
 # Zydiskell
 
 Haskell langage binding for the [Zydis library](https://github.com/zyantific/zydis), a fast and lightweight x86/x86-64 disassembler.
