@@ -380,16 +380,16 @@ instance Storable DecodedInstructionRawPrefix where
 data DecodedInstructionRaw =
   DecodedInstructionRaw
   { decodedInstructionRawPrefixCount :: {-# UNPACK #-}!Word8
-  , decodedInstructionRawPrefixes    :: !(Vec ZydisMaxInstructionLength DecodedInstructionRawPrefix)
-  , decodedInstructionRawRex         :: !DecodedInstructionRawRex
-  , decodedInstructionRawXop         :: !DecodedInstructionRawXop
-  , decodedInstructionRawVex         :: !DecodedInstructionRawVex
-  , decodedInstructionRawEvex        :: !DecodedInstructionRawEvex
-  , decodedInstructionRawMvex        :: !DecodedInstructionRawMvex
-  , decodedInstructionRawModRm       :: !DecodedInstructionModRm
-  , decodedInstructionRawSib         :: !DecodedInstructionRawSib
-  , decodedInstructionRawDisp        :: !DecodedInstructionRawDisp
-  , decodedInstructionRawImmediates  :: !(Vec ZydisRawImmediateCount DecodedInstructionRawImmediate)
+  , decodedInstructionRawPrefixes    :: {-# UNPACK #-}!(Vec ZydisMaxInstructionLength DecodedInstructionRawPrefix)
+  , decodedInstructionRawRex         :: {-# UNPACK #-}!DecodedInstructionRawRex
+  , decodedInstructionRawXop         :: {-# UNPACK #-}!DecodedInstructionRawXop
+  , decodedInstructionRawVex         :: {-# UNPACK #-}!DecodedInstructionRawVex
+  , decodedInstructionRawEvex        :: {-# UNPACK #-}!DecodedInstructionRawEvex
+  , decodedInstructionRawMvex        :: {-# UNPACK #-}!DecodedInstructionRawMvex
+  , decodedInstructionRawModRm       :: {-# UNPACK #-}!DecodedInstructionModRm
+  , decodedInstructionRawSib         :: {-# UNPACK #-}!DecodedInstructionRawSib
+  , decodedInstructionRawDisp        :: {-# UNPACK #-}!DecodedInstructionRawDisp
+  , decodedInstructionRawImmediates  :: {-# UNPACK #-}!(Vec ZydisRawImmediateCount DecodedInstructionRawImmediate)
   }
   deriving stock (Show, Eq)
 
@@ -485,8 +485,8 @@ instance Storable DecodedInstructionAvxMask where
 data DecodedInstructionAvx =
   DecodedInstructionAvx
     { decodedInstructionAvxVectorLength    :: {-# UNPACK #-}!Word16
-    , decodedInstructionAvxMask            :: !DecodedInstructionAvxMask
-    , decodedInstructionAvxBroadcast       :: !DecodedInstructionAvxBroadcast
+    , decodedInstructionAvxMask            :: {-# UNPACK #-}!DecodedInstructionAvxMask
+    , decodedInstructionAvxBroadcast       :: {-# UNPACK #-}!DecodedInstructionAvxBroadcast
     , decodedInstructionAvxRoundingMode    :: !RoundingMode
     , decodedInstructionAvxSwizzleMode     :: !SwizzleMode
     , decodedInstructionAvxConversionMode  :: !ConversionMode
@@ -526,12 +526,12 @@ data DecodedInstruction =
     , decodedInstructionOperandWidth  :: {-# UNPACK #-}!Word8
     , decodedInstructionAddressWidth  :: {-# UNPACK #-}!Word8
     , decodedInstructionOperandCount  :: {-# UNPACK #-}!Word8
-    , decodedInstructionOperands      :: !(Vec ZydisMaxOperandCount Operand)
+    , decodedInstructionOperands      :: {-# UNPACK #-}!(Vec ZydisMaxOperandCount Operand)
     , decodedInstructionAttributes    :: {-# UNPACK #-}!Word64
-    , decodedInstructionAccessedFlags :: !(Vec (ZydisCpuFlagMaxValue + 1) CPUFlagAction)
-    , decodedInstructionAvx           :: !DecodedInstructionAvx
-    , decodedInstructionMeta          :: !DecodedInstructionMeta
-    , decodedInstructionRaw           :: !DecodedInstructionRaw
+    , decodedInstructionAccessedFlags :: {-# UNPACK #-}!(Vec (ZydisCpuFlagMaxValue + 1) CPUFlagAction)
+    , decodedInstructionAvx           :: {-# UNPACK #-}!DecodedInstructionAvx
+    , decodedInstructionMeta          :: {-# UNPACK #-}!DecodedInstructionMeta
+    , decodedInstructionRaw           :: {-# UNPACK #-}!DecodedInstructionRaw
     }
   deriving stock (Show, Eq)
 

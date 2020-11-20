@@ -111,7 +111,7 @@ data OperandMemory =
     , operandMemoryBase         :: !Register
     , operandMemoryIndex        :: !Register
     , operandMemoryScale        :: {-# UNPACK #-}!Word8
-    , operandMemoryDisplacement :: !OperandMemoryDisplacement
+    , operandMemoryDisplacement :: {-# UNPACK #-}!OperandMemoryDisplacement
     }
   deriving stock (Show, Eq)
 
@@ -144,9 +144,9 @@ data Operand =
     , operandElementSize  :: {-# UNPACK #-}!Word16
     , operandElementCount :: {-# UNPACK #-}!Word16
     , operandRegister     :: !Register
-    , operandMemory       :: !OperandMemory
-    , operandPointer      :: !OperandPointer
-    , operandImmediate    :: !OperandImmediate
+    , operandMemory       :: {-# UNPACK #-}!OperandMemory
+    , operandPointer      :: {-# UNPACK #-}!OperandPointer
+    , operandImmediate    :: {-# UNPACK #-}!OperandImmediate
     }
   deriving stock (Show, Eq)
 
