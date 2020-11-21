@@ -32,7 +32,7 @@ Z.decodeBuffer
   -> IO (Either Z.ZyanStatus Z.DecodedInstruction)
 
 Z.decodeFullBuffer
-  :: Z.Decoder -> ByteString -> IO (Either Z.ZyanStatus (Vector Z.DecodedInstruction))
+  :: Z.Decoder -> ByteString -> IO (Either Z.ZyanStatus (Seq Z.DecodedInstruction))
 ```
 
 ## Example
@@ -41,7 +41,7 @@ Z.decodeFullBuffer
 
 module Main where
 
-import           Data.Vector
+import           Data.Sequence
 import           Data.Bifoldable
 import qualified Zydis                         as Z
 
@@ -73,7 +73,7 @@ test = bitraverse_ initFailure decode =<< initZydis
   {-
       Given the decoded buffer, should output: [MnemonicMov,MnemonicPush,MnemonicRet]
   -}
-  printMnemonics :: Vector Z.DecodedInstruction -> IO ()
+  printMnemonics :: Seq Z.DecodedInstruction -> IO ()
   printMnemonics = print . fmap Z.decodedInstructionMnemonic
 
   decode :: Z.Decoder -> IO ()

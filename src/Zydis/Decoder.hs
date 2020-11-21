@@ -35,7 +35,7 @@ where
 import           Data.Bits
 import           Data.ByteString               as BS
 import           Data.ByteString.Internal
-import           Data.Vector
+import           Data.Sequence
 import           Data.Word
 import           Foreign.ForeignPtr
 import           Foreign.Marshal
@@ -106,27 +106,26 @@ decodeBuffer d bs o l = alloca @Decoder go
 
 -- | Efficiently decode an entire buffer of instructions.
 decodeFullBuffer
-  :: Decoder -> ByteString -> IO (Either ZyanStatus (Vector DecodedInstruction))
+  :: Decoder -> ByteString -> IO (Either ZyanStatus (Seq DecodedInstruction))
 decodeFullBuffer d bs = alloca @Decoder go
  where
   (bufferForeignPtr, _, bufferLength) = toForeignPtr bs
 
-  go decoderPtr = alloca @DecodedInstruction $ go' decoderPtr
+  go = alloca @DecodedInstruction . go'
 
-  go' decoderPtr decodedInstructionPtr =
-    withForeignPtr bufferForeignPtr $ go'' decoderPtr decodedInstructionPtr
+  go' decoderPtr = withForeignPtr bufferForeignPtr . go'' decoderPtr
 
   go'' decoderPtr decodedInstructionPtr bufferPtr = do
     poke decoderPtr d
-    loop (mempty @(Vector DecodedInstruction), 0, fromIntegral bufferLength)
+    loop mempty 0 (fromIntegral bufferLength)
    where
-    loop (!v, !o, !l)
+    loop !v !o !l
       | l > 0 = do
         x <- doDecodeInstruction decoderPtr decodedInstructionPtr bufferPtr o l
         case x of
           Right i -> do
             let il = fromIntegral $ decodedInstructionLength i
-            loop (v <> pure i, o + il, l - il)
+            loop (v :|> i) (o + il) (l - il)
           Left s -> pure $ Left s
       | otherwise = pure $ Right v
 {-# INLINE decodeFullBuffer #-}
