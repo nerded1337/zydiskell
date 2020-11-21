@@ -15,12 +15,10 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Haskell
-        uses: actions/setup-haskell@v1.1.3
+        uses: actions/setup-haskell@v1.1.4
         with:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: latest
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       - name: Cabal update
         run: cabal v2-update
       - name: Cabal build
@@ -39,12 +37,10 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Haskell
-        uses: actions/setup-haskell@v1.1.3
+        uses: actions/setup-haskell@v1.1.4
         with:
           enable-stack: true
           stack-no-global: true
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       - name: Stack build
         run: stack build
       - name: Stack test
