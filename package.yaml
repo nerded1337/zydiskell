@@ -92,8 +92,9 @@ library:
 tests:
   zydiskell-tests:
     source-dirs: test
-    main: Main.hs
+    main: Spec.hs
     dependencies:
       - zydiskell
+      - hspec
     ghc-options:
       - -Wall
