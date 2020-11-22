@@ -209,7 +209,7 @@ zydisStatusSkipToken = makeZyanNativeStatus False zyanModuleZydis 0x0B
 
 -- | Marshal low level Zyan/Zydis status to our "ZyanStatus".
 --
--- This function should cover the complete range of possibilities.
+-- This function must cover the complete range of possibilities.
 --
 fromZyanNativeStatus :: ZyanNativeStatus -> ZyanStatus
 fromZyanNativeStatus s
