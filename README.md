@@ -3,7 +3,7 @@
 
 # Zydiskell
 
-Haskell langage binding for the [Zydis library](https://github.com/zyantific/zydis), a fast and lightweight x86/x86-64 disassembler.
+Haskell langage wrapper for the [Zydis library](https://github.com/zyantific/zydis), a fast and lightweight x86/x86-64 disassembler.
 
 ## Building
 
