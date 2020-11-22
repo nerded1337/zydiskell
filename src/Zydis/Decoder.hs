@@ -23,6 +23,8 @@
 
 module Zydis.Decoder
   ( ZyanStatus
+  , ZydisStatus(..)
+  , ZyanCoreStatus(..)
   , ZyanUSize
   , Offset
   , Length
@@ -32,7 +34,6 @@ module Zydis.Decoder
   )
 where
 
-import           Data.Bits
 import           Data.ByteString               as BS
 import           Data.ByteString.Internal
 import           Data.Sequence
@@ -41,15 +42,15 @@ import           Foreign.ForeignPtr
 import           Foreign.Marshal
 import           Foreign.Ptr
 import           Foreign.Storable
+
 import           Zydis.Types
+import           Zydis.Status
 
 -- * FFI types
 
 type MachineModeC = Word32
 
 type AddressWidthC = Word32
-
-type ZyanStatus = Word32
 
 type ZyanUSize = Word64
 
@@ -60,27 +61,24 @@ type Length = ZyanUSize
 -- * FFI declarations
 
 foreign import ccall unsafe "ZydisDecoderInit" c_ZydisDecoderInit
-  :: Ptr Decoder -> MachineModeC -> AddressWidthC -> IO ZyanStatus
+  :: Ptr Decoder -> MachineModeC -> AddressWidthC -> IO ZyanNativeStatus
 
 foreign import ccall unsafe "ZydisDecoderDecodeBuffer" c_ZydisDecoderDecodeBuffer
-  :: Ptr Decoder -> Ptr Word8 -> ZyanUSize -> Ptr DecodedInstruction -> IO ZyanStatus
+  :: Ptr Decoder -> Ptr Word8 -> ZyanUSize -> Ptr DecodedInstruction -> IO ZyanNativeStatus
 
 -- * FFI bridges
-
--- | Directly stolen from https://github.com/zyantific/zycore-c/blob/71440fa634d1313db735d3262d453be641bb404f/include/Zycore/Status.h#L81
-zyanSuccess :: Word32 -> Bool
-zyanSuccess x = (x .&. 0x80000000) == 0
-{-# INLINE zyanSuccess #-}
 
 -- | Initialize a Zydis decoder, required to decode instructions.
 initialize :: MachineMode -> AddressWidth -> IO (Either ZyanStatus Decoder)
 initialize mm aw = alloca go
  where
-  go decoder = do
-    r <- c_ZydisDecoderInit decoder
+  go decoderPtr = do
+    r <- c_ZydisDecoderInit decoderPtr
                             (fromIntegral $ fromEnum mm)
                             (fromIntegral $ fromEnum aw)
-    if zyanSuccess r then Right <$> peek decoder else pure $ Left r
+    case fromZyanNativeStatus r of
+      Left ZyanCoreStatusSuccess -> Right <$> peek decoderPtr
+      x                          -> pure $ Left x
 {-# INLINE initialize #-}
 
 -- | Decode a single intruction.
@@ -142,5 +140,7 @@ doDecodeInstruction decoderPtr decodedInstructionPtr bufferPtr o l = do
                                   (plusPtr bufferPtr (fromIntegral o))
                                   l
                                   decodedInstructionPtr
-  if zyanSuccess r then Right <$> peek decodedInstructionPtr else pure $ Left r
+  case fromZyanNativeStatus r of
+    Left ZyanCoreStatusSuccess -> Right <$> peek decodedInstructionPtr
+    x                          -> pure $ Left x
 {-# INLINE doDecodeInstruction #-}
