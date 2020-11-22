@@ -19,12 +19,14 @@ jobs:
         with:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: latest
-      - name: Cabal update
-        run: cabal v2-update
-      - name: Cabal build
-        run: cabal v2-build
-      - name: Cabal test
-        run: cabal v2-test
+      - name: Update
+        run: cabal update
+      - name: Build
+        run: cabal build
+      - name: Install hspec-discover
+        run: cabal install --install-method=copy hspec-discover
+      - name: Test
+        run: cabal test
 
   build-stack:
     runs-on: ${{ matrix.os }}
@@ -41,7 +43,7 @@ jobs:
         with:
           enable-stack: true
           stack-no-global: true
-      - name: Stack build
+      - name: Build
         run: stack build
-      - name: Stack test
+      - name: Test
         run: stack test
